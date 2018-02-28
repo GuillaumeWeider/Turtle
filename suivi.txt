@@ -1,0 +1,18 @@
+Déroulement du travail :
+
+1.  concevoir la grammaire, en particulier identifier les tokens nécessaires,
+    mais ne pas créer d’actions ;
+2.  concevoir l’analyseur lexical pour tous les tokens ;
+3.  générer un arbre de syntaxe abstrait correct, ce qui implique de coder
+    toutes les fonctions relatives à cette structure ;
+4.  faire une fonction qui affiche l’arbre de syntaxe abstrait comme un programme
+    Turtle ;
+5.  faire une fonction qui évalue l’arbre de syntaxe abstrait et renvoie une
+    suite de primitives de base.
+
+Observations :
+
+1.  commentaire : #
+    nombre : {double}
+    couleur : {couleur} ou {[0.0-1.0][0.0-1.0][0.0-1.0]}
+    expr : ...

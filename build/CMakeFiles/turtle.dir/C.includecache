@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/d/bash/AS/turtle/turtle-ast.c
+turtle-ast.h
+/mnt/d/bash/AS/turtle/turtle-ast.h
+assert.h
+-
+stdarg.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+math.h
+-
+
+/mnt/d/bash/AS/turtle/turtle-ast.h
+stddef.h
+-
+stdbool.h
+-
+
