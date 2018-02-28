@@ -49,7 +49,9 @@ extern int yydebug;
     NAME = 259,
     KW_FORWARD = 260,
     KW_BACKWARD = 261,
-    KW_POSITION = 262
+    KW_POSITION = 262,
+    KW_UP = 263,
+    KW_DOWN = 264
   };
 #endif
 
@@ -64,7 +66,7 @@ union YYSTYPE
   const char *name;
   struct ast_node *node;
 
-#line 68 "/mnt/d/bash/AS/turtle/build/turtle-parser.h" /* yacc.c:1909  */
+#line 70 "/mnt/d/bash/AS/turtle/build/turtle-parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

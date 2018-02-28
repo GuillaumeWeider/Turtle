@@ -14,14 +14,14 @@ DIGIT [0-9]
 %%
 
 "forward"|"fw"        { return KW_FORWARD; }
-
 "backward"|"bw"       { return KW_BACKWARD; }
-
 "position"|"pos"      { return KW_POSITION; }
+"up"                  { return KW_UP; }
+"down"                { return KW_DOWN; }
 
 {DIGIT}+              { yylval.value = strtod(yytext, NULL); return VALUE; }
 
-[\n\t ]*              /* whitespace */
+[\n\t\r ]*              /* whitespace */
 .                     { fprintf(stderr, "Unknown token: '%s'\n", yytext); exit(EXIT_FAILURE); }
 
 %%
