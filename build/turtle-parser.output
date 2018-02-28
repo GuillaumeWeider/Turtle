@@ -14,40 +14,42 @@ Grammaire
 
     4 cmd: "forward" expr
     5    | "backward" expr
+    6    | "position" expr expr
 
-    6 expr_literal: "value"
+    7 expr_literal: "value"
 
-    7 expr_primary: expr_literal
+    8 expr_primary: expr_literal
 
-    8 expr: expr_primary
+    9 expr: expr_primary
 
 
 Terminaux, suivis des règles où ils apparaissent
 
 $end (0) 0
 error (256)
-"value" (258) 6
+"value" (258) 7
 "name" (259)
 "forward" (260) 4
 "backward" (261) 5
+"position" (262) 6
 
 
 Non-terminaux, suivis des règles où ils apparaissent
 
-$accept (7)
+$accept (8)
     à gauche: 0
-unit (8)
+unit (9)
     à gauche: 1, à droite: 0
-cmds (9)
+cmds (10)
     à gauche: 2 3, à droite: 1 2
-cmd (10)
-    à gauche: 4 5, à droite: 2
-expr_literal (11)
-    à gauche: 6, à droite: 7
-expr_primary (12)
+cmd (11)
+    à gauche: 4 5 6, à droite: 2
+expr_literal (12)
     à gauche: 7, à droite: 8
-expr (13)
-    à gauche: 8, à droite: 4 5
+expr_primary (13)
+    à gauche: 8, à droite: 9
+expr (14)
+    à gauche: 9, à droite: 4 5 6
 
 
 État 0
@@ -56,107 +58,138 @@ expr (13)
 
     "forward"   décalage et aller à l'état 1
     "backward"  décalage et aller à l'état 2
+    "position"  décalage et aller à l'état 3
 
     $défaut  réduction par utilisation de la règle 3 (cmds)
 
-    unit  aller à l'état 3
-    cmds  aller à l'état 4
-    cmd   aller à l'état 5
+    unit  aller à l'état 4
+    cmds  aller à l'état 5
+    cmd   aller à l'état 6
 
 
 État 1
 
     4 cmd: "forward" . expr
 
-    "value"  décalage et aller à l'état 6
+    "value"  décalage et aller à l'état 7
 
-    expr_literal  aller à l'état 7
-    expr_primary  aller à l'état 8
-    expr          aller à l'état 9
+    expr_literal  aller à l'état 8
+    expr_primary  aller à l'état 9
+    expr          aller à l'état 10
 
 
 État 2
 
     5 cmd: "backward" . expr
 
-    "value"  décalage et aller à l'état 6
+    "value"  décalage et aller à l'état 7
 
-    expr_literal  aller à l'état 7
-    expr_primary  aller à l'état 8
-    expr          aller à l'état 10
+    expr_literal  aller à l'état 8
+    expr_primary  aller à l'état 9
+    expr          aller à l'état 11
 
 
 État 3
 
-    0 $accept: unit . $end
+    6 cmd: "position" . expr expr
 
-    $end  décalage et aller à l'état 11
+    "value"  décalage et aller à l'état 7
+
+    expr_literal  aller à l'état 8
+    expr_primary  aller à l'état 9
+    expr          aller à l'état 12
 
 
 État 4
+
+    0 $accept: unit . $end
+
+    $end  décalage et aller à l'état 13
+
+
+État 5
 
     1 unit: cmds .
 
     $défaut  réduction par utilisation de la règle 1 (unit)
 
 
-État 5
+État 6
 
     2 cmds: cmd . cmds
 
     "forward"   décalage et aller à l'état 1
     "backward"  décalage et aller à l'état 2
+    "position"  décalage et aller à l'état 3
 
     $défaut  réduction par utilisation de la règle 3 (cmds)
 
-    cmds  aller à l'état 12
-    cmd   aller à l'état 5
-
-
-État 6
-
-    6 expr_literal: "value" .
-
-    $défaut  réduction par utilisation de la règle 6 (expr_literal)
+    cmds  aller à l'état 14
+    cmd   aller à l'état 6
 
 
 État 7
 
-    7 expr_primary: expr_literal .
+    7 expr_literal: "value" .
 
-    $défaut  réduction par utilisation de la règle 7 (expr_primary)
+    $défaut  réduction par utilisation de la règle 7 (expr_literal)
 
 
 État 8
 
-    8 expr: expr_primary .
+    8 expr_primary: expr_literal .
 
-    $défaut  réduction par utilisation de la règle 8 (expr)
+    $défaut  réduction par utilisation de la règle 8 (expr_primary)
 
 
 État 9
+
+    9 expr: expr_primary .
+
+    $défaut  réduction par utilisation de la règle 9 (expr)
+
+
+État 10
 
     4 cmd: "forward" expr .
 
     $défaut  réduction par utilisation de la règle 4 (cmd)
 
 
-État 10
+État 11
 
     5 cmd: "backward" expr .
 
     $défaut  réduction par utilisation de la règle 5 (cmd)
 
 
-État 11
+État 12
+
+    6 cmd: "position" expr . expr
+
+    "value"  décalage et aller à l'état 7
+
+    expr_literal  aller à l'état 8
+    expr_primary  aller à l'état 9
+    expr          aller à l'état 15
+
+
+État 13
 
     0 $accept: unit $end .
 
     $défaut  accepter
 
 
-État 12
+État 14
 
     2 cmds: cmd cmds .
 
     $défaut  réduction par utilisation de la règle 2 (cmds)
+
+
+État 15
+
+    6 cmd: "position" expr expr .
+
+    $défaut  réduction par utilisation de la règle 6 (cmd)

@@ -8,6 +8,7 @@
 enum ast_cmd {
   CMD_FORWARD,
   CMD_BACKWARD,
+  CMD_POSITION
 };
 
 // internal functions
@@ -49,7 +50,8 @@ struct ast_node {
 // for example:
 struct ast_node *make_expr_value(double value);
 
-struct ast_node *make_simple_cmd_move(struct ast_node* children, enum ast_cmd cmd);
+struct ast_node *make_cmd_fw_bw(struct ast_node* children, enum ast_cmd cmd);
+struct ast_node *make_cmd_position(struct ast_node* children1, struct ast_node* children2);
 
 // root of the abstract syntax tree
 struct ast {

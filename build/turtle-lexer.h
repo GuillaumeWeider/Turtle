@@ -327,7 +327,7 @@ extern int yylex (void);
 #undef YY_DECL
 #endif
 
-#line 25 "turtle-lexer.l"
+#line 27 "turtle-lexer.l"
 
 
 #line 334 "/mnt/d/bash/AS/turtle/build/turtle-lexer.h"

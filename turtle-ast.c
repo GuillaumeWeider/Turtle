@@ -16,12 +16,22 @@ struct ast_node *make_expr_value(double value) {
   return node;
 }
 
-struct ast_node *make_simple_cmd_move(struct ast_node* children, enum ast_cmd cmd) {
+struct ast_node *make_cmd_fw_bw(struct ast_node* children, enum ast_cmd cmd) {
   struct ast_node *node = calloc(1, sizeof(struct ast_node));
   node->kind = KIND_CMD_SIMPLE;
   node->u.cmd = cmd;
   node->children_count = 1;
   node->children[0] = children;
+  return node;
+}
+
+struct ast_node *make_cmd_position(struct ast_node* children1, struct ast_node* children2) {
+  struct ast_node *node = calloc(1, sizeof(struct ast_node));
+  node->kind = KIND_CMD_SIMPLE;
+  node->u.cmd = CMD_POSITION;
+  node->children_count = 2;
+  node->children[0] = children1;
+  node->children[1] = children2;
   return node;
 }
 
@@ -59,17 +69,22 @@ void ast_node_print(const struct ast_node *self) {
 
   switch(self->kind) {
     case KIND_EXPR_VALUE:
-      printf("%f\n", self->u.value);
+      printf("%f ", self->u.value);
       break;
     case KIND_CMD_SIMPLE:
       switch(self->u.cmd) {
         case CMD_FORWARD:
-          printf("forward \n");
+          printf("\nforward ");
           ast_node_print(self->children[0]);
           break;
         case CMD_BACKWARD:
-          printf("backward \n");
+          printf("\nbackward ");
           ast_node_print(self->children[0]);
+          break;
+        case CMD_POSITION:
+          printf("\nposition ");
+          ast_node_print(self->children[0]);
+          ast_node_print(self->children[1]);
           break;
       }
       break;

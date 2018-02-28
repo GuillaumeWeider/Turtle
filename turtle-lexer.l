@@ -17,6 +17,8 @@ DIGIT [0-9]
 
 "backward"|"bw"       { return KW_BACKWARD; }
 
+"position"|"pos"      { return KW_POSITION; }
+
 {DIGIT}+              { yylval.value = strtod(yytext, NULL); return VALUE; }
 
 [\n\t ]*              /* whitespace */
