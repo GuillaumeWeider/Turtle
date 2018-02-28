@@ -7,7 +7,7 @@
 // simple commands
 enum ast_cmd {
   CMD_FORWARD,
-  // TODO: add simple commands
+  CMD_BACKWARD,
 };
 
 // internal functions
@@ -48,7 +48,8 @@ struct ast_node {
 // TODO: make some constructors to use in parser.y
 // for example:
 struct ast_node *make_expr_value(double value);
-struct ast_node* make_forward(struct ast_node* self);
+
+struct ast_node *make_simple_cmd_move(struct ast_node* children, enum ast_cmd cmd);
 
 // root of the abstract syntax tree
 struct ast {

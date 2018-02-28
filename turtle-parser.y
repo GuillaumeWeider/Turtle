@@ -25,7 +25,7 @@ void yyerror(struct ast *ret, const char *);
 %token <name>     NAME        "name"
 
 %token            KW_FORWARD  "forward"
-/* TODO: add other keywords */
+%token            KW_BACKWARD  "backward"
 
 %type <node> unit cmds cmd expr_literal expr_primary expr
 
@@ -41,7 +41,8 @@ cmds:
 ;
 
 cmd:
-    KW_FORWARD expr   { $$ = make_forward($2);  }
+    KW_FORWARD expr   { $$ = make_simple_cmd_move($2, CMD_FORWARD); }
+  | KW_BACKWARD expr  { $$ = make_simple_cmd_move($2, CMD_BACKWARD); }
 ;
 
 expr_literal:

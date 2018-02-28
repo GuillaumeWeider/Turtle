@@ -16,10 +16,13 @@ struct ast_node *make_expr_value(double value) {
   return node;
 }
 
-struct ast_node *make_forward(struct ast_node* self) {
-  self->kind = KIND_CMD_SIMPLE;
-  self->u.cmd = CMD_FORWARD;
-  return self;
+struct ast_node *make_simple_cmd_move(struct ast_node* children, enum ast_cmd cmd) {
+  struct ast_node *node = calloc(1, sizeof(struct ast_node));
+  node->kind = KIND_CMD_SIMPLE;
+  node->u.cmd = cmd;
+  node->children_count = 1;
+  node->children[0] = children;
+  return node;
 }
 
 void ast_destroy(struct ast *self) {
@@ -39,7 +42,7 @@ void context_create(struct context *self) {
  */
 
 void ast_eval(const struct ast *self, struct context *ctx) {
-
+  //Mettre à jour le ctx et faire des printf (lineTo, moveTo, color)
 }
 
 /*
@@ -62,6 +65,10 @@ void ast_node_print(const struct ast_node *self) {
       switch(self->u.cmd) {
         case CMD_FORWARD:
           printf("forward \n");
+          ast_node_print(self->children[0]);
+          break;
+        case CMD_BACKWARD:
+          printf("backward \n");
           ast_node_print(self->children[0]);
           break;
       }
