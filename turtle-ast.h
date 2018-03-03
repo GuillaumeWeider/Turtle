@@ -56,6 +56,7 @@ struct ast_node {
 // TODO: make some constructors to use in parser.y
 // for example:
 struct ast_node *make_expr_value(double value);
+struct ast_node *make_expr_name(const char* name);
 
 struct ast_node *make_cmd_simple_noParam(enum ast_cmd cmd);
 struct ast_node *make_cmd_simple_1Param(struct ast_node* children, enum ast_cmd cmd);

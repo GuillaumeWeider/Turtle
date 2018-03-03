@@ -16,6 +16,13 @@ struct ast_node *make_expr_value(double value) {
   return node;
 }
 
+struct ast_node *make_expr_name(const char* name) {
+    struct ast_node *node = calloc(1, sizeof(struct ast_node));
+    node->kind = KIND_EXPR_VALUE;
+    node->u.name = name;
+    return node;
+}
+
 struct ast_node *make_cmd_simple_noParam(enum ast_cmd cmd) {
   struct ast_node *node = calloc(1, sizeof(struct ast_node));
   node->kind = KIND_CMD_SIMPLE;

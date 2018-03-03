@@ -64,6 +64,7 @@ cmd:
 
 expr_literal:
     VALUE { $$ = make_expr_value($1); }
+    NAME  { $$ = make_expr_name($1);  }
     /* TODO: add identifier */
 ;
 
