@@ -10,6 +10,7 @@
 %option warn 8bit nodefault noyywrap
 
 DIGIT [0-9]
+LETTER [A-Z]|[a-z]
 
 %%
 
@@ -25,6 +26,7 @@ DIGIT [0-9]
 "color"               { return KW_COLOR; }
 
 {DIGIT}+              { yylval.value = strtod(yytext, NULL); return VALUE; }
+{LETTER}*             { yylval.value = strtod(yytext, NULL); return NAME; }
 
 [\n\t\r ]*              /* whitespace */
 .                     { fprintf(stderr, "Unknown token: '%s'\n", yytext); exit(EXIT_FAILURE); }
