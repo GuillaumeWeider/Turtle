@@ -18,6 +18,11 @@ DIGIT [0-9]
 "position"|"pos"      { return KW_POSITION; }
 "up"                  { return KW_UP; }
 "down"                { return KW_DOWN; }
+"print"               { return KW_PRINT; }
+"right"|"rt"          { return KW_RIGHT; }
+"left"|"lt"           { return KW_LEFT; }
+"heading"|"hd"        { return KW_HEADING; }
+"color"               { return KW_COLOR; }
 
 {DIGIT}+              { yylval.value = strtod(yytext, NULL); return VALUE; }
 

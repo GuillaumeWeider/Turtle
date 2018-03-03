@@ -16,7 +16,15 @@ struct ast_node *make_expr_value(double value) {
   return node;
 }
 
-struct ast_node *make_cmd_fw_bw(struct ast_node* children, enum ast_cmd cmd) {
+struct ast_node *make_cmd_simple_noParam(enum ast_cmd cmd) {
+  struct ast_node *node = calloc(1, sizeof(struct ast_node));
+  node->kind = KIND_CMD_SIMPLE;
+  node->u.cmd = cmd;
+  node->children_count = 0;
+  return node;
+}
+
+struct ast_node *make_cmd_simple_1Param(struct ast_node* children, enum ast_cmd cmd) {
   struct ast_node *node = calloc(1, sizeof(struct ast_node));
   node->kind = KIND_CMD_SIMPLE;
   node->u.cmd = cmd;
@@ -25,23 +33,16 @@ struct ast_node *make_cmd_fw_bw(struct ast_node* children, enum ast_cmd cmd) {
   return node;
 }
 
-struct ast_node *make_cmd_position(struct ast_node* children1, struct ast_node* children2) {
+struct ast_node *make_cmd_simple_2Param(struct ast_node* children1, struct ast_node* children2, enum ast_cmd cmd) {
   struct ast_node *node = calloc(1, sizeof(struct ast_node));
   node->kind = KIND_CMD_SIMPLE;
-  node->u.cmd = CMD_POSITION;
+  node->u.cmd = cmd;
   node->children_count = 2;
   node->children[0] = children1;
   node->children[1] = children2;
   return node;
 }
 
-struct ast_node *make_cmd_up_down(enum ast_cmd cmd) {
-  struct ast_node *node = calloc(1, sizeof(struct ast_node));
-  node->kind = KIND_CMD_SIMPLE;
-  node->u.cmd = cmd;
-  node->children_count = 0;
-  return node;
-}
 
 void ast_destroy(struct ast *self) {
 
@@ -70,6 +71,7 @@ void ast_eval(const struct ast *self, struct context *ctx) {
 void ast_print(const struct ast *self) {
 
   ast_node_print(self->unit);
+  printf("\n\n");
 }
 
 void ast_node_print(const struct ast_node *self) {
@@ -94,10 +96,30 @@ void ast_node_print(const struct ast_node *self) {
           ast_node_print(self->children[1]);
           break;
         case CMD_UP:
-          printf("\nup ");
+          printf("\nup");
           break;
         case CMD_DOWN:
-          printf("\ndown ");
+          printf("\ndown");
+          break;
+        case CMD_PRINT:
+          printf("\nprint ");
+          ast_node_print(self->children[0]);
+          break;
+        case CMD_RIGHT:
+          printf("\nright ");
+          ast_node_print(self->children[0]);
+          break;
+        case CMD_LEFT:
+          printf("\nleft ");
+          ast_node_print(self->children[0]);
+          break;
+        case CMD_HEADING:
+          printf("\nheading ");
+          ast_node_print(self->children[0]);
+          break;
+        case CMD_COLOR:
+          printf("\ncolor ");
+          ast_node_print(self->children[0]);
           break;
       }
       break;
@@ -105,6 +127,5 @@ void ast_node_print(const struct ast_node *self) {
   if(self->next != NULL) {
     ast_node_print(self->next);
   }
-  printf("\n");
 
 }
