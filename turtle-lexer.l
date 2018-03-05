@@ -10,7 +10,7 @@
 %option warn 8bit nodefault noyywrap
 
 DIGIT [0-9]
-LETTER [A-Z]+[0-9A-Z]*
+STRING [A-Z]+[0-9A-Z]*
 
 %%
 
@@ -33,6 +33,9 @@ LETTER [A-Z]+[0-9A-Z]*
 "color"               { return KW_COLOR; }
 
 "repeat"              { return KW_REPEAT; }
+"set"                 { return KW_SET; }
+"proc"                { return KW_PROC; }
+"call"                { return KW_CALL; }
 
 "sin"                 { return KW_SIN; }
 "cos"                 { return KW_COS; }
@@ -41,9 +44,8 @@ LETTER [A-Z]+[0-9A-Z]*
 "pow"                 { return KW_POW; }
 "random"              { return KW_RANDOM; }
 
-
 {DIGIT}+              { yylval.value = strtod(yytext, NULL); return VALUE; }
-{LETTER}              { yylval.value = strtod(yytext, NULL); return NAME; }
+{STRING}*             { yylval.value = strtod(yytext, NULL); return NAME; }
 
 [\n\t\r ]*              /* whitespace */
 .                     { fprintf(stderr, "Unknown token: '%s'\n", yytext); exit(EXIT_FAILURE); }
