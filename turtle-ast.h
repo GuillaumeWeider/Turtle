@@ -30,6 +30,7 @@ enum ast_kind {
   // TODO: add non-simple commands: repeat, block, proc, call, set
 
   KIND_EXPR_VALUE,
+  KIND_EXPR_NAME,
   // TODO: add expressions kind: func, binop, block, name
 };
 

@@ -35,6 +35,8 @@ void yyerror(struct ast *ret, const char *);
 %token            KW_COLOR     "color"
 %token            KW_POSITION  "position"
 
+%token            KW_REPEAT    "repeat"
+
 %type <node> unit cmds cmd expr_literal expr_primary expr
 
 %%
@@ -59,11 +61,11 @@ cmd:
   | KW_HEADING expr       { $$ = make_cmd_simple_1Param($2, CMD_HEADING); }
   | KW_COLOR expr         { $$ = make_cmd_simple_1Param($2, CMD_COLOR); } /*Trois param ou une couleur et les virgules entre les expr*/
   | KW_POSITION expr ',' expr { $$ = make_cmd_simple_2Param($2, $4, CMD_POSITION); }
-
+  | KW_REPEAT expr ',' cmd
 ;
 
 expr_literal:
-    VALUE { $$ = make_expr_value($1); }
+      VALUE { $$ = make_expr_value($1); }
     | NAME  { $$ = make_expr_name($1);  }
 ;
 
@@ -73,7 +75,7 @@ expr_primary:
 ;
 
 expr:
-    expr_primary      { $$ = $1; }
+      expr_primary      { $$ = $1; }
     | expr '+' expr     { $$ = $1 + $3; }
     | expr '-' expr     { $$ = $1 - $3; }
     | expr '*' expr     { $$ = $1 * $3; }

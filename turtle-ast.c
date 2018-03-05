@@ -18,7 +18,7 @@ struct ast_node *make_expr_value(double value) {
 
 struct ast_node *make_expr_name(const char* name) {
     struct ast_node *node = calloc(1, sizeof(struct ast_node));
-    node->kind = KIND_EXPR_VALUE;
+    node->kind = KIND_EXPR_NAME;
     node->u.name = name;
     return node;
 }
@@ -86,6 +86,9 @@ void ast_node_print(const struct ast_node *self) {
   switch(self->kind) {
     case KIND_EXPR_VALUE:
       printf("%f ", self->u.value);
+      break;
+    case KIND_EXPR_NAME:
+      printf("%s ", self->u.name);
       break;
     case KIND_CMD_SIMPLE:
       switch(self->u.cmd) {

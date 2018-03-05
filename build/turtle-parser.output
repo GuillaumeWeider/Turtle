@@ -1,6 +1,8 @@
-Terminaux inutilisés dans la grammaire
-
-   "name"
+État 39 conflits: 4 décalage/réduction
+État 40 conflits: 4 décalage/réduction
+État 41 conflits: 4 décalage/réduction
+État 42 conflits: 4 décalage/réduction
+État 44 conflits: 4 décalage/réduction, 4 réduction/réduction
 
 
 Grammaire
@@ -21,21 +23,35 @@ Grammaire
    10    | "left" expr
    11    | "heading" expr
    12    | "color" expr
-   13    | "position" expr expr
+   13    | "position" expr ',' expr
 
    14 expr_literal: "value"
+   15             | "name"
 
-   15 expr_primary: expr_literal
+   16 expr_primary: expr_literal
 
-   16 expr: expr_primary
+   17 expr: expr_primary
+   18     | expr '+' expr
+   19     | expr '-' expr
+   20     | expr '*' expr
+   21     | expr '/' expr
+   22     | '(' expr ')'
+   23     | '-' expr '+' expr
 
 
 Terminaux, suivis des règles où ils apparaissent
 
 $end (0) 0
+'(' (40) 22
+')' (41) 22
+'*' (42) 20
+'+' (43) 18 23
+',' (44) 13
+'-' (45) 19 23
+'/' (47) 21
 error (256)
 "value" (258) 14
-"name" (259)
+"name" (259) 15
 "up" (260) 4
 "down" (261) 5
 "forward" (262) 6
@@ -50,20 +66,21 @@ error (256)
 
 Non-terminaux, suivis des règles où ils apparaissent
 
-$accept (15)
+$accept (22)
     à gauche: 0
-unit (16)
+unit (23)
     à gauche: 1, à droite: 0
-cmds (17)
+cmds (24)
     à gauche: 2 3, à droite: 1 2
-cmd (18)
+cmd (25)
     à gauche: 4 5 6 7 8 9 10 11 12 13, à droite: 2
-expr_literal (19)
-    à gauche: 14, à droite: 15
-expr_primary (20)
-    à gauche: 15, à droite: 16
-expr (21)
-    à gauche: 16, à droite: 6 7 8 9 10 11 12 13
+expr_literal (26)
+    à gauche: 14 15, à droite: 16
+expr_primary (27)
+    à gauche: 16, à droite: 17
+expr (28)
+    à gauche: 17 18 19 20 21 22 23, à droite: 6 7 8 9 10 11 12 13
+    18 19 20 21 22 23
 
 
 État 0
@@ -107,10 +124,13 @@ expr (21)
     6 cmd: "forward" . expr
 
     "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
 
-    expr_literal  aller à l'état 15
-    expr_primary  aller à l'état 16
-    expr          aller à l'état 17
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 20
 
 
 État 4
@@ -118,10 +138,13 @@ expr (21)
     7 cmd: "backward" . expr
 
     "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
 
-    expr_literal  aller à l'état 15
-    expr_primary  aller à l'état 16
-    expr          aller à l'état 18
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 21
 
 
 État 5
@@ -129,10 +152,13 @@ expr (21)
     8 cmd: "print" . expr
 
     "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
 
-    expr_literal  aller à l'état 15
-    expr_primary  aller à l'état 16
-    expr          aller à l'état 19
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 22
 
 
 État 6
@@ -140,10 +166,13 @@ expr (21)
     9 cmd: "right" . expr
 
     "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
 
-    expr_literal  aller à l'état 15
-    expr_primary  aller à l'état 16
-    expr          aller à l'état 20
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 23
 
 
 État 7
@@ -151,10 +180,13 @@ expr (21)
    10 cmd: "left" . expr
 
     "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
 
-    expr_literal  aller à l'état 15
-    expr_primary  aller à l'état 16
-    expr          aller à l'état 21
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 24
 
 
 État 8
@@ -162,10 +194,13 @@ expr (21)
    11 cmd: "heading" . expr
 
     "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
 
-    expr_literal  aller à l'état 15
-    expr_primary  aller à l'état 16
-    expr          aller à l'état 22
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 25
 
 
 État 9
@@ -173,28 +208,34 @@ expr (21)
    12 cmd: "color" . expr
 
     "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
 
-    expr_literal  aller à l'état 15
-    expr_primary  aller à l'état 16
-    expr          aller à l'état 23
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 26
 
 
 État 10
 
-   13 cmd: "position" . expr expr
+   13 cmd: "position" . expr ',' expr
 
     "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
 
-    expr_literal  aller à l'état 15
-    expr_primary  aller à l'état 16
-    expr          aller à l'état 24
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 27
 
 
 État 11
 
     0 $accept: unit . $end
 
-    $end  décalage et aller à l'état 25
+    $end  décalage et aller à l'état 28
 
 
 État 12
@@ -221,7 +262,7 @@ expr (21)
 
     $défaut  réduction par utilisation de la règle 3 (cmds)
 
-    cmds  aller à l'état 26
+    cmds  aller à l'état 29
     cmd   aller à l'état 13
 
 
@@ -234,94 +275,431 @@ expr (21)
 
 État 15
 
-   15 expr_primary: expr_literal .
+   15 expr_literal: "name" .
 
-    $défaut  réduction par utilisation de la règle 15 (expr_primary)
+    $défaut  réduction par utilisation de la règle 15 (expr_literal)
 
 
 État 16
 
-   16 expr: expr_primary .
+   23 expr: '-' . expr '+' expr
 
-    $défaut  réduction par utilisation de la règle 16 (expr)
+    "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
+
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 30
 
 
 État 17
 
-    6 cmd: "forward" expr .
+   22 expr: '(' . expr ')'
 
-    $défaut  réduction par utilisation de la règle 6 (cmd)
+    "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
+
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 31
 
 
 État 18
 
-    7 cmd: "backward" expr .
+   16 expr_primary: expr_literal .
 
-    $défaut  réduction par utilisation de la règle 7 (cmd)
+    $défaut  réduction par utilisation de la règle 16 (expr_primary)
 
 
 État 19
 
-    8 cmd: "print" expr .
+   17 expr: expr_primary .
 
-    $défaut  réduction par utilisation de la règle 8 (cmd)
+    $défaut  réduction par utilisation de la règle 17 (expr)
 
 
 État 20
 
-    9 cmd: "right" expr .
+    6 cmd: "forward" expr .
+   18 expr: expr . '+' expr
+   19     | expr . '-' expr
+   20     | expr . '*' expr
+   21     | expr . '/' expr
 
-    $défaut  réduction par utilisation de la règle 9 (cmd)
+    '+'  décalage et aller à l'état 32
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
+
+    $défaut  réduction par utilisation de la règle 6 (cmd)
 
 
 État 21
 
-   10 cmd: "left" expr .
+    7 cmd: "backward" expr .
+   18 expr: expr . '+' expr
+   19     | expr . '-' expr
+   20     | expr . '*' expr
+   21     | expr . '/' expr
 
-    $défaut  réduction par utilisation de la règle 10 (cmd)
+    '+'  décalage et aller à l'état 32
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
+
+    $défaut  réduction par utilisation de la règle 7 (cmd)
 
 
 État 22
 
-   11 cmd: "heading" expr .
+    8 cmd: "print" expr .
+   18 expr: expr . '+' expr
+   19     | expr . '-' expr
+   20     | expr . '*' expr
+   21     | expr . '/' expr
 
-    $défaut  réduction par utilisation de la règle 11 (cmd)
+    '+'  décalage et aller à l'état 32
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
+
+    $défaut  réduction par utilisation de la règle 8 (cmd)
 
 
 État 23
 
-   12 cmd: "color" expr .
+    9 cmd: "right" expr .
+   18 expr: expr . '+' expr
+   19     | expr . '-' expr
+   20     | expr . '*' expr
+   21     | expr . '/' expr
 
-    $défaut  réduction par utilisation de la règle 12 (cmd)
+    '+'  décalage et aller à l'état 32
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
+
+    $défaut  réduction par utilisation de la règle 9 (cmd)
 
 
 État 24
 
-   13 cmd: "position" expr . expr
+   10 cmd: "left" expr .
+   18 expr: expr . '+' expr
+   19     | expr . '-' expr
+   20     | expr . '*' expr
+   21     | expr . '/' expr
 
-    "value"  décalage et aller à l'état 14
+    '+'  décalage et aller à l'état 32
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
 
-    expr_literal  aller à l'état 15
-    expr_primary  aller à l'état 16
-    expr          aller à l'état 27
+    $défaut  réduction par utilisation de la règle 10 (cmd)
 
 
 État 25
+
+   11 cmd: "heading" expr .
+   18 expr: expr . '+' expr
+   19     | expr . '-' expr
+   20     | expr . '*' expr
+   21     | expr . '/' expr
+
+    '+'  décalage et aller à l'état 32
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
+
+    $défaut  réduction par utilisation de la règle 11 (cmd)
+
+
+État 26
+
+   12 cmd: "color" expr .
+   18 expr: expr . '+' expr
+   19     | expr . '-' expr
+   20     | expr . '*' expr
+   21     | expr . '/' expr
+
+    '+'  décalage et aller à l'état 32
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
+
+    $défaut  réduction par utilisation de la règle 12 (cmd)
+
+
+État 27
+
+   13 cmd: "position" expr . ',' expr
+   18 expr: expr . '+' expr
+   19     | expr . '-' expr
+   20     | expr . '*' expr
+   21     | expr . '/' expr
+
+    ','  décalage et aller à l'état 36
+    '+'  décalage et aller à l'état 32
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
+
+
+État 28
 
     0 $accept: unit $end .
 
     $défaut  accepter
 
 
-État 26
+État 29
 
     2 cmds: cmd cmds .
 
     $défaut  réduction par utilisation de la règle 2 (cmds)
 
 
-État 27
+État 30
 
-   13 cmd: "position" expr expr .
+   18 expr: expr . '+' expr
+   19     | expr . '-' expr
+   20     | expr . '*' expr
+   21     | expr . '/' expr
+   23     | '-' expr . '+' expr
+
+    '+'  décalage et aller à l'état 37
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
+
+
+État 31
+
+   18 expr: expr . '+' expr
+   19     | expr . '-' expr
+   20     | expr . '*' expr
+   21     | expr . '/' expr
+   22     | '(' expr . ')'
+
+    '+'  décalage et aller à l'état 32
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
+    ')'  décalage et aller à l'état 38
+
+
+État 32
+
+   18 expr: expr '+' . expr
+
+    "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
+
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 39
+
+
+État 33
+
+   19 expr: expr '-' . expr
+
+    "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
+
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 40
+
+
+État 34
+
+   20 expr: expr '*' . expr
+
+    "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
+
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 41
+
+
+État 35
+
+   21 expr: expr '/' . expr
+
+    "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
+
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 42
+
+
+État 36
+
+   13 cmd: "position" expr ',' . expr
+
+    "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
+
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 43
+
+
+État 37
+
+   18 expr: expr '+' . expr
+   23     | '-' expr '+' . expr
+
+    "value"  décalage et aller à l'état 14
+    "name"   décalage et aller à l'état 15
+    '-'      décalage et aller à l'état 16
+    '('      décalage et aller à l'état 17
+
+    expr_literal  aller à l'état 18
+    expr_primary  aller à l'état 19
+    expr          aller à l'état 44
+
+
+État 38
+
+   22 expr: '(' expr ')' .
+
+    $défaut  réduction par utilisation de la règle 22 (expr)
+
+
+État 39
+
+   18 expr: expr . '+' expr
+   18     | expr '+' expr .
+   19     | expr . '-' expr
+   20     | expr . '*' expr
+   21     | expr . '/' expr
+
+    '+'  décalage et aller à l'état 32
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
+
+    '+'       [réduction par utilisation de la règle 18 (expr)]
+    '-'       [réduction par utilisation de la règle 18 (expr)]
+    '*'       [réduction par utilisation de la règle 18 (expr)]
+    '/'       [réduction par utilisation de la règle 18 (expr)]
+    $défaut  réduction par utilisation de la règle 18 (expr)
+
+
+État 40
+
+   18 expr: expr . '+' expr
+   19     | expr . '-' expr
+   19     | expr '-' expr .
+   20     | expr . '*' expr
+   21     | expr . '/' expr
+
+    '+'  décalage et aller à l'état 32
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
+
+    '+'       [réduction par utilisation de la règle 19 (expr)]
+    '-'       [réduction par utilisation de la règle 19 (expr)]
+    '*'       [réduction par utilisation de la règle 19 (expr)]
+    '/'       [réduction par utilisation de la règle 19 (expr)]
+    $défaut  réduction par utilisation de la règle 19 (expr)
+
+
+État 41
+
+   18 expr: expr . '+' expr
+   19     | expr . '-' expr
+   20     | expr . '*' expr
+   20     | expr '*' expr .
+   21     | expr . '/' expr
+
+    '+'  décalage et aller à l'état 32
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
+
+    '+'       [réduction par utilisation de la règle 20 (expr)]
+    '-'       [réduction par utilisation de la règle 20 (expr)]
+    '*'       [réduction par utilisation de la règle 20 (expr)]
+    '/'       [réduction par utilisation de la règle 20 (expr)]
+    $défaut  réduction par utilisation de la règle 20 (expr)
+
+
+État 42
+
+   18 expr: expr . '+' expr
+   19     | expr . '-' expr
+   20     | expr . '*' expr
+   21     | expr . '/' expr
+   21     | expr '/' expr .
+
+    '+'  décalage et aller à l'état 32
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
+
+    '+'       [réduction par utilisation de la règle 21 (expr)]
+    '-'       [réduction par utilisation de la règle 21 (expr)]
+    '*'       [réduction par utilisation de la règle 21 (expr)]
+    '/'       [réduction par utilisation de la règle 21 (expr)]
+    $défaut  réduction par utilisation de la règle 21 (expr)
+
+
+État 43
+
+   13 cmd: "position" expr ',' expr .
+   18 expr: expr . '+' expr
+   19     | expr . '-' expr
+   20     | expr . '*' expr
+   21     | expr . '/' expr
+
+    '+'  décalage et aller à l'état 32
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
 
     $défaut  réduction par utilisation de la règle 13 (cmd)
+
+
+État 44
+
+   18 expr: expr . '+' expr
+   18     | expr '+' expr .
+   19     | expr . '-' expr
+   20     | expr . '*' expr
+   21     | expr . '/' expr
+   23     | '-' expr '+' expr .
+
+    '+'  décalage et aller à l'état 32
+    '-'  décalage et aller à l'état 33
+    '*'  décalage et aller à l'état 34
+    '/'  décalage et aller à l'état 35
+
+    '+'       [réduction par utilisation de la règle 18 (expr)]
+    '+'       [réduction par utilisation de la règle 23 (expr)]
+    '-'       [réduction par utilisation de la règle 18 (expr)]
+    '-'       [réduction par utilisation de la règle 23 (expr)]
+    '*'       [réduction par utilisation de la règle 18 (expr)]
+    '*'       [réduction par utilisation de la règle 23 (expr)]
+    '/'       [réduction par utilisation de la règle 18 (expr)]
+    '/'       [réduction par utilisation de la règle 23 (expr)]
+    $défaut  réduction par utilisation de la règle 23 (expr)
