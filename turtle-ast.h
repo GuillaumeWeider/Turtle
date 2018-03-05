@@ -20,8 +20,12 @@ enum ast_cmd {
 
 // internal functions
 enum ast_func {
+  FUNC_SIN,
   FUNC_COS,
-  // TODO: add other functions
+  FUNC_TAN,
+  FUNC_SQRT,
+  FUNC_POW,
+  FUNC_RANDOM,
 };
 
 // kind of a node in the abstract syntax tree
@@ -32,7 +36,10 @@ enum ast_kind {
 
   KIND_EXPR_VALUE,
   KIND_EXPR_NAME,
-  // TODO: add expressions kind: func, binop, block, name
+  KIND_EXPR_BINOP,
+  KIND_UNARY_MINUS,
+  KIND_FUNC,
+  // TODO: add expressions kind: block
 };
 
 #define AST_CHILDREN_MAX 3
@@ -65,6 +72,12 @@ struct ast_node *make_cmd_simple_1Param(struct ast_node* children, enum ast_cmd 
 struct ast_node *make_cmd_simple_2Param(struct ast_node* children1, struct ast_node* children2, enum ast_cmd cmd);
 
 struct ast_node *make_repeat(struct ast_node* children1, struct ast_node* children2);
+
+struct ast_node *make_expr_binop(struct ast_node* children1, struct ast_node* children2, char operator);
+struct ast_node *make_unary_minus(struct ast_node* children,  enum ast_kind kind);
+
+struct ast_node *make_function_1Param(struct ast_node* children, enum ast_func func);
+struct ast_node *make_function_2Param(struct ast_node* children1, struct ast_node* children2, enum ast_func func);
 
 // root of the abstract syntax tree
 struct ast {

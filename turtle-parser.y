@@ -36,6 +36,16 @@ void yyerror(struct ast *ret, const char *);
 %token            KW_POSITION  "position"
 
 %token            KW_REPEAT    "repeat"
+%token            KW_SIN       "sin"
+%token            KW_COS       "cos"
+%token            KW_TAN       "tan"
+%token            KW_SQRT      "sqrt"
+%token            KW_POW       "pw"
+%token            KW_RANDOM    "random"
+
+%left '+' '-'
+%left '*' '/'
+%left UMINUS
 
 %type <node> unit cmds cmd expr_literal expr_primary expr
 
@@ -70,12 +80,23 @@ expr_literal:
 ;
 
 expr_primary:
-    expr_literal        { $$ = $1; }
-    /* TODO: add internal functions */
+    expr_literal                        { $$ = $1; }
+    | KW_SIN '(' expr ')'               { $$ = make_function_1Param($3, FUNC_SIN); }
+    | KW_COS '(' expr ')'               { $$ = make_function_1Param($3, FUNC_COS); }
+    | KW_TAN '(' expr ')'               { $$ = make_function_1Param($3, FUNC_TAN); }
+    | KW_SQRT '(' expr ')'              { $$ = make_function_1Param($3, FUNC_SQRT); }
+    | KW_POW '(' expr ',' expr ')'      { $$ = make_function_2Param($3, $5, FUNC_POW); }
+    | KW_RANDOM '(' expr ',' expr ')'   { $$ = make_function_2Param($3, $5, FUNC_RANDOM); }
 ;
 
 expr:
       expr_primary      { $$ = $1; }
+      | expr '+' expr     { $$ = make_expr_binop($1, $3, '+'); }
+      | expr '-' expr     { $$ = make_expr_binop($1, $3, '-'); }
+      | expr '*' expr     { $$ = make_expr_binop($1, $3, '*'); }
+      | expr '/' expr     { $$ = make_expr_binop($1, $3, '/'); }
+      | '(' expr ')'        { $$ = $2; }
+      | '-' expr %prec UMINUS { $$ = make_unary_minus($2, KIND_UNARY_MINUS);}
 ;
 
 %%

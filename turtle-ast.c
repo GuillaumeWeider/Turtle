@@ -59,6 +59,43 @@ struct ast_node *make_repeat(struct ast_node* children1, struct ast_node* childr
   return node;
 }
 
+struct ast_node *make_expr_binop(struct ast_node* children1, struct ast_node* children2, char operator) {
+  struct ast_node *node = calloc(1, sizeof(struct ast_node));
+  node->kind = KIND_EXPR_BINOP;
+  node->u.op = operator;
+  node->children_count = 2;
+  node->children[0] = children1;
+  node->children[1] = children2;
+  return node;
+}
+
+struct ast_node *make_unary_minus(struct ast_node* children,  enum ast_kind kind) {
+  struct ast_node *node = calloc(1, sizeof(struct ast_node));
+  node->kind = kind;
+  node->children_count = 1;
+  node->children[0] = children;
+  return node;
+}
+
+struct ast_node *make_function_1Param(struct ast_node* children, enum ast_func func) {
+  struct ast_node *node = calloc(1, sizeof(struct ast_node));
+  node->kind = KIND_FUNC;
+  node->u.func = func;
+  node->children_count = 1;
+  node->children[0] = children;
+  return node;
+}
+
+
+struct ast_node *make_function_2Param(struct ast_node* children1, struct ast_node* children2, enum ast_func func) {
+  struct ast_node *node = calloc(1, sizeof(struct ast_node));
+  node->kind = KIND_FUNC;
+  node->u.func = func;
+  node->children_count = 2;
+  node->children[0] = children1;
+  node->children[1] = children2;
+  return node;
+}
 
 void ast_destroy(struct ast *self) {
 
@@ -99,6 +136,15 @@ void ast_node_print(const struct ast_node *self) {
     case KIND_EXPR_NAME:
       printf("%s ", self->u.name);
       break;
+    case KIND_EXPR_BINOP:
+        printf("%c ", self->u.op);
+        ast_node_print(self->children[0]);
+        ast_node_print(self->children[1]);
+        break;
+    case KIND_UNARY_MINUS:
+        printf("-");
+        ast_node_print(self->children[0]);
+        break;
     case KIND_CMD_SIMPLE:
       switch(self->u.cmd) {
         case CMD_FORWARD:
