@@ -51,59 +51,63 @@ void yyerror(struct ast *ret, const char *);
 %left '*' '/'
 %left UMINUS
 
-%type <node> unit cmds cmd expr_literal expr_primary expr
+%type <node> unit cmds cmd block expr_literal expr_primary expr
 
 %%
 
 unit:
-    cmds              { $$ = $1; ret->unit = $$; }
+    cmds                               { $$ = $1; ret->unit = $$; }
 ;
 
 cmds:
-    cmd cmds          { $1->next = $2; $$ = $1; }
-  | /* empty */       { $$ = NULL; }
+    cmd cmds                           { $1->next = $2; $$ = $1; }
+  | /* empty */                        { $$ = NULL; }
 ;
 
 cmd:
-    KW_UP                       { $$ = make_cmd_simple_noParam(CMD_UP); }
-  | KW_DOWN                     { $$ = make_cmd_simple_noParam(CMD_DOWN); }
-  | KW_FORWARD expr             { $$ = make_cmd_simple_1Param($2, CMD_FORWARD); }
-  | KW_BACKWARD expr            { $$ = make_cmd_simple_1Param($2, CMD_BACKWARD); }
-  | KW_PRINT expr               { $$ = make_cmd_simple_1Param($2, CMD_PRINT); }
-  | KW_RIGHT expr               { $$ = make_cmd_simple_1Param($2, CMD_RIGHT); }
-  | KW_LEFT expr                { $$ = make_cmd_simple_1Param($2, CMD_LEFT); }
-  | KW_HEADING expr             { $$ = make_cmd_simple_1Param($2, CMD_HEADING); }
-  | KW_COLOR expr               { $$ = make_cmd_simple_1Param($2, CMD_COLOR); }
-  | KW_POSITION expr expr       { $$ = make_cmd_simple_2Param($2, $3, CMD_POSITION); }
-  | KW_REPEAT expr cmds         { $$ = make_cmd($2, $3, KIND_REPEAT); }
-  | KW_SET expr expr            { $$ = make_cmd($2, $3, KIND_SET); }
-  | KW_PROC expr cmd            { $$ = make_cmd($2, $3, KIND_PROC); }
-  | KW_CALL expr                { $$ = make_call($2); }
+    KW_UP                              { $$ = make_cmd_simple_noParam(CMD_UP); }
+  | KW_DOWN                            { $$ = make_cmd_simple_noParam(CMD_DOWN); }
+  | KW_FORWARD expr                    { $$ = make_cmd_simple_1Param($2, CMD_FORWARD); }
+  | KW_BACKWARD expr                   { $$ = make_cmd_simple_1Param($2, CMD_BACKWARD); }
+  | KW_PRINT expr                      { $$ = make_cmd_simple_1Param($2, CMD_PRINT); }
+  | KW_RIGHT expr                      { $$ = make_cmd_simple_1Param($2, CMD_RIGHT); }
+  | KW_LEFT expr                       { $$ = make_cmd_simple_1Param($2, CMD_LEFT); }
+  | KW_HEADING expr                    { $$ = make_cmd_simple_1Param($2, CMD_HEADING); }
+  | KW_COLOR expr ',' expr ',' expr    { $$ = make_cmd_simple_3Param($2, $4, $6, CMD_COLOR); }
+  | KW_POSITION expr ',' expr          { $$ = make_cmd_simple_2Param($2, $4, CMD_POSITION); }
+  | KW_REPEAT expr cmds                { $$ = make_cmd_kind_2Param($2, $3, KIND_REPEAT); }
+  | KW_SET NAME expr                   { $$ = make_cmd_kind_name_2Param($2, $3, KIND_SET); } /*Dans eval faire pour que toutes les variables soient enregistrées dans un tableau ou une liste chainé*/
+  | KW_PROC NAME block                 { $$ = make_cmd_kind_name_2Param($2, $3, KIND_PROC); }
+  | KW_CALL expr                       { $$ = make_cmd_kind_1Param($2, KIND_CALL); }
+;
+
+block:
+  '{' cmds '}'                         { $$ = make_cmd_kind_1Param($2, KIND_BLOCK); }
 ;
 
 expr_literal:
-      VALUE { $$ = make_expr_value($1); }
-    | NAME  { $$ = make_expr_name($1);  }
+      VALUE                            { $$ = make_expr_value($1); }
+    | NAME                             { $$ = make_expr_name($1);  }
 ;
 
 expr_primary:
-    expr_literal                        { $$ = $1; }
-    | KW_SIN '(' expr ')'               { $$ = make_function_1Param($3, FUNC_SIN); }
-    | KW_COS '(' expr ')'               { $$ = make_function_1Param($3, FUNC_COS); }
-    | KW_TAN '(' expr ')'               { $$ = make_function_1Param($3, FUNC_TAN); }
-    | KW_SQRT '(' expr ')'              { $$ = make_function_1Param($3, FUNC_SQRT); }
-    | KW_POW '(' expr ',' expr ')'      { $$ = make_function_2Param($3, $5, FUNC_POW); }
-    | KW_RANDOM '(' expr ',' expr ')'   { $$ = make_function_2Param($3, $5, FUNC_RANDOM); }
+    expr_literal                       { $$ = $1; }
+    | KW_SIN '(' expr ')'              { $$ = make_function_1Param($3, FUNC_SIN); }
+    | KW_COS '(' expr ')'              { $$ = make_function_1Param($3, FUNC_COS); }
+    | KW_TAN '(' expr ')'              { $$ = make_function_1Param($3, FUNC_TAN); }
+    | KW_SQRT '(' expr ')'             { $$ = make_function_1Param($3, FUNC_SQRT); }
+    | KW_POW '(' expr ',' expr ')'     { $$ = make_function_2Param($3, $5, FUNC_POW); }
+    | KW_RANDOM '(' expr ',' expr ')'  { $$ = make_function_2Param($3, $5, FUNC_RANDOM); }
 ;
 
 expr:
-      expr_primary      { $$ = $1; }
-      | expr '+' expr     { $$ = make_expr_binop($1, $3, '+'); }
-      | expr '-' expr     { $$ = make_expr_binop($1, $3, '-'); }
-      | expr '*' expr     { $$ = make_expr_binop($1, $3, '*'); }
-      | expr '/' expr     { $$ = make_expr_binop($1, $3, '/'); }
-      | '(' expr ')'        { $$ = $2; }
-      | '-' expr %prec UMINUS { $$ = make_unary_minus($2, KIND_UNARY_MINUS);}
+      expr_primary                     { $$ = $1; }
+      | expr '+' expr                  { $$ = make_expr_binop($1, $3, '+'); }
+      | expr '-' expr                  { $$ = make_expr_binop($1, $3, '-'); }
+      | expr '*' expr                  { $$ = make_expr_binop($1, $3, '*'); }
+      | expr '/' expr                  { $$ = make_expr_binop($1, $3, '/'); }
+      | '(' expr ')'                   { $$ = $2; }
+      | '-' expr %prec UMINUS          { $$ = make_cmd_kind_1Param($2, KIND_UNARY_MINUS);}
 ;
 
 %%

@@ -8,6 +8,8 @@
 #include <math.h>
 
 #define PI 3.141592653589793
+#define SQRT2 1.41421356237309504880
+#define SQRT3 1.7320508075688772935
 
 struct ast_node *make_expr_value(double value) {
   struct ast_node *node = calloc(1, sizeof(struct ast_node));
@@ -50,20 +52,14 @@ struct ast_node *make_cmd_simple_2Param(struct ast_node* children1, struct ast_n
   return node;
 }
 
-struct ast_node *make_cmd(struct ast_node* children1, struct ast_node* children2, enum ast_cmd cmd) {
+struct ast_node *make_cmd_simple_3Param(struct ast_node* children1, struct ast_node* children2, struct ast_node* children3, enum ast_cmd cmd) {
   struct ast_node *node = calloc(1, sizeof(struct ast_node));
-  node->kind = cmd;
-  node->children_count = 2;
+  node->kind = KIND_CMD_SIMPLE;
+  node->u.cmd = cmd;
+  node->children_count = 3;
   node->children[0] = children1;
   node->children[1] = children2;
-  return node;
-}
-
-struct ast_node *make_call(struct ast_node* children1) {
-  struct ast_node *node = calloc(1, sizeof(struct ast_node));
-  node->kind = KIND_CALL;
-  node->children_count = 1;
-  node->children[0] = children1;
+  node->children[2] = children3;
   return node;
 }
 
@@ -77,11 +73,29 @@ struct ast_node *make_expr_binop(struct ast_node* children1, struct ast_node* ch
   return node;
 }
 
-struct ast_node *make_unary_minus(struct ast_node* children,  enum ast_kind kind) {
+struct ast_node *make_cmd_kind_1Param(struct ast_node* children,  enum ast_kind kind) {
   struct ast_node *node = calloc(1, sizeof(struct ast_node));
   node->kind = kind;
   node->children_count = 1;
   node->children[0] = children;
+  return node;
+}
+
+struct ast_node *make_cmd_kind_2Param(struct ast_node* children1, struct ast_node* children2,  enum ast_kind kind) {
+  struct ast_node *node = calloc(1, sizeof(struct ast_node));
+  node->kind = kind;
+  node->children_count = 2;
+  node->children[0] = children1;
+  node->children[1] = children2;
+  return node;
+}
+
+struct ast_node *make_cmd_kind_name_2Param(const char* children1, struct ast_node* children2,  enum ast_kind kind) {
+  struct ast_node *node = calloc(1, sizeof(struct ast_node));
+  node->kind = kind;
+  node->children_count = 2;
+  node->children[0] = make_expr_name(children1);
+  node->children[1] = children2;
   return node;
 }
 
@@ -216,6 +230,44 @@ void ast_node_print(const struct ast_node *self) {
       printf("call ");
       ast_node_print(self->children[0]);
       break;
+    case KIND_BLOCK:
+      printf("{ ");
+      ast_node_print(self->children[0]);
+      printf(" }");
+      break;
+    case KIND_FUNC:
+      switch(self->u.func) {
+        case FUNC_SIN:
+          printf("\nsin ");
+          ast_node_print(self->children[0]);
+          break;
+        case FUNC_COS:
+          printf("\ncos ");
+          ast_node_print(self->children[0]);
+          break;
+        case FUNC_TAN:
+          printf("\ntan ");
+          ast_node_print(self->children[0]);
+          break;
+        case FUNC_SQRT:
+          printf("\nsqrt ");
+          ast_node_print(self->children[0]);
+          break;
+        case FUNC_POW:
+          printf("\n");
+          ast_node_print(self->children[0]);
+          printf("^");
+          ast_node_print(self->children[1]);
+          break;
+        case FUNC_RANDOM:
+          printf("\nrandom [");
+          ast_node_print(self->children[0]);
+          printf(", ");
+          ast_node_print(self->children[1]);
+          printf("]");
+          break;
+        }
+        break;
   }
   if(self->next != NULL) {
     ast_node_print(self->next);

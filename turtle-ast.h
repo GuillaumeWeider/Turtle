@@ -35,14 +35,13 @@ enum ast_kind {
   KIND_SET,
   KIND_PROC,
   KIND_CALL,
-  // TODO: add non-simple commands: block
+  KIND_BLOCK,
 
   KIND_EXPR_VALUE,
   KIND_EXPR_NAME,
   KIND_EXPR_BINOP,
   KIND_UNARY_MINUS,
   KIND_FUNC,
-  // TODO: add expressions kind: block
 };
 
 #define AST_CHILDREN_MAX 3
@@ -73,12 +72,14 @@ struct ast_node *make_expr_name(const char* name);
 struct ast_node *make_cmd_simple_noParam(enum ast_cmd cmd);
 struct ast_node *make_cmd_simple_1Param(struct ast_node* children, enum ast_cmd cmd);
 struct ast_node *make_cmd_simple_2Param(struct ast_node* children1, struct ast_node* children2, enum ast_cmd cmd);
+struct ast_node *make_cmd_simple_3Param(struct ast_node* children1, struct ast_node* children2, struct ast_node* children3, enum ast_cmd cmd);
 
-struct ast_node *make_cmd(struct ast_node* children1, struct ast_node* children2, enum ast_cmd cmd);
-struct ast_node *make_call(struct ast_node* children1);
+
+struct ast_node *make_cmd_kind_1Param(struct ast_node* children,  enum ast_kind kind);
+struct ast_node *make_cmd_kind_2Param(struct ast_node* children1, struct ast_node* children2,  enum ast_kind kind);
+struct ast_node *make_cmd_kind_name_2Param(const char* children1, struct ast_node* children2,  enum ast_kind kind);
 
 struct ast_node *make_expr_binop(struct ast_node* children1, struct ast_node* children2, char operator);
-struct ast_node *make_unary_minus(struct ast_node* children,  enum ast_kind kind);
 
 struct ast_node *make_function_1Param(struct ast_node* children, enum ast_func func);
 struct ast_node *make_function_2Param(struct ast_node* children1, struct ast_node* children2, enum ast_func func);
