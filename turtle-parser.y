@@ -36,6 +36,9 @@ void yyerror(struct ast *ret, const char *);
 %token            KW_POSITION  "position"
 
 %token            KW_REPEAT    "repeat"
+%token            KW_SET       "set"
+%token            KW_PROC      "proc"
+%token            KW_CALL      "call"
 
 %type <node> unit cmds cmd expr_literal expr_primary expr
 
@@ -51,17 +54,20 @@ cmds:
 ;
 
 cmd:
-    KW_UP                      { $$ = make_cmd_simple_noParam(CMD_UP); }
-  | KW_DOWN                    { $$ = make_cmd_simple_noParam(CMD_DOWN); }
-  | KW_FORWARD expr            { $$ = make_cmd_simple_1Param($2, CMD_FORWARD); }
-  | KW_BACKWARD expr           { $$ = make_cmd_simple_1Param($2, CMD_BACKWARD); }
-  | KW_PRINT expr              { $$ = make_cmd_simple_1Param($2, CMD_PRINT); }
-  | KW_RIGHT expr              { $$ = make_cmd_simple_1Param($2, CMD_RIGHT); }
-  | KW_LEFT expr               { $$ = make_cmd_simple_1Param($2, CMD_LEFT); }
-  | KW_HEADING expr            { $$ = make_cmd_simple_1Param($2, CMD_HEADING); }
-  | KW_COLOR expr              { $$ = make_cmd_simple_1Param($2, CMD_COLOR); } /*Trois param ou une couleur et les virgules entre les expr*/
-  | KW_POSITION expr ',' expr  { $$ = make_cmd_simple_2Param($2, $4, CMD_POSITION); }
-  | KW_REPEAT expr ',' cmds    { $$ = make_repeat($2, $4); }
+    KW_UP                       { $$ = make_cmd_simple_noParam(CMD_UP); }
+  | KW_DOWN                     { $$ = make_cmd_simple_noParam(CMD_DOWN); }
+  | KW_FORWARD expr             { $$ = make_cmd_simple_1Param($2, CMD_FORWARD); }
+  | KW_BACKWARD expr            { $$ = make_cmd_simple_1Param($2, CMD_BACKWARD); }
+  | KW_PRINT expr               { $$ = make_cmd_simple_1Param($2, CMD_PRINT); }
+  | KW_RIGHT expr               { $$ = make_cmd_simple_1Param($2, CMD_RIGHT); }
+  | KW_LEFT expr                { $$ = make_cmd_simple_1Param($2, CMD_LEFT); }
+  | KW_HEADING expr             { $$ = make_cmd_simple_1Param($2, CMD_HEADING); }
+  | KW_COLOR expr               { $$ = make_cmd_simple_1Param($2, CMD_COLOR); }
+  | KW_POSITION expr expr       { $$ = make_cmd_simple_2Param($2, $3, CMD_POSITION); }
+  | KW_REPEAT expr cmds         { $$ = make_cmd($2, $3, KIND_REPEAT); }
+  | KW_SET expr expr            { $$ = make_cmd($2, $3, KIND_SET); }
+  | KW_PROC expr cmd            { $$ = make_cmd($2, $3, KIND_PROC); }
+  | KW_CALL expr                { $$ = make_call($2); }
 ;
 
 expr_literal:

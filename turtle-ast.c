@@ -50,12 +50,20 @@ struct ast_node *make_cmd_simple_2Param(struct ast_node* children1, struct ast_n
   return node;
 }
 
-struct ast_node *make_repeat(struct ast_node* children1, struct ast_node* children2) {
+struct ast_node *make_cmd(struct ast_node* children1, struct ast_node* children2, enum ast_cmd cmd) {
   struct ast_node *node = calloc(1, sizeof(struct ast_node));
-  node->kind = KIND_REPEAT;
+  node->kind = cmd;
   node->children_count = 2;
   node->children[0] = children1;
   node->children[1] = children2;
+  return node;
+}
+
+struct ast_node *make_call(struct ast_node* children1) {
+  struct ast_node *node = calloc(1, sizeof(struct ast_node));
+  node->kind = KIND_CALL;
+  node->children_count = 1;
+  node->children[0] = children1;
   return node;
 }
 
@@ -143,10 +151,23 @@ void ast_node_print(const struct ast_node *self) {
       }
       break;
     case KIND_REPEAT:
-      printf("repeat {\n");
+      printf("repeat ");
       ast_node_print(self->children[0]);
       ast_node_print(self->children[1]);
-      printf("}\n");
+      break;
+    case KIND_SET:
+      printf("set ");
+      ast_node_print(self->children[0]);
+      ast_node_print(self->children[1]);
+      break;
+    case KIND_PROC:
+      printf("proc ");
+      ast_node_print(self->children[0]);
+      ast_node_print(self->children[1]);
+      break;
+    case KIND_CALL:
+      printf("call ");
+      ast_node_print(self->children[0]);
       break;
   }
   if(self->next != NULL) {
