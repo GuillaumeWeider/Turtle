@@ -57,15 +57,14 @@ cmd:
   | KW_RIGHT expr         { $$ = make_cmd_simple_1Param($2, CMD_RIGHT); }
   | KW_LEFT expr          { $$ = make_cmd_simple_1Param($2, CMD_LEFT); }
   | KW_HEADING expr       { $$ = make_cmd_simple_1Param($2, CMD_HEADING); }
-  | KW_COLOR expr         { $$ = make_cmd_simple_1Param($2, CMD_COLOR); }
-  | KW_POSITION expr expr { $$ = make_cmd_simple_2Param($2, $3, CMD_POSITION); }
+  | KW_COLOR expr         { $$ = make_cmd_simple_1Param($2, CMD_COLOR); } /*Trois param ou une couleur et les virgules entre les expr*/
+  | KW_POSITION expr ',' expr { $$ = make_cmd_simple_2Param($2, $4, CMD_POSITION); }
 
 ;
 
 expr_literal:
     VALUE { $$ = make_expr_value($1); }
-    NAME  { $$ = make_expr_name($1);  }
-    /* TODO: add identifier */
+    | NAME  { $$ = make_expr_name($1);  }
 ;
 
 expr_primary:
@@ -75,6 +74,12 @@ expr_primary:
 
 expr:
     expr_primary      { $$ = $1; }
+    | expr '+' expr     { $$ = $1 + $3; }
+    | expr '-' expr     { $$ = $1 - $3; }
+    | expr '*' expr     { $$ = $1 * $3; }
+    | expr '/' expr     { $$ = $1 / $3; }
+    | '('expr')'        { $$ = ( $2 ); }
+    | '-' expr '+' expr { $$ = $4 - $2;} /*A revoir -> moins unaire*/
 ;
 
 %%

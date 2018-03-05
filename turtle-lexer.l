@@ -10,9 +10,16 @@
 %option warn 8bit nodefault noyywrap
 
 DIGIT [0-9]
-LETTER [A-Z]|[a-z]
+LETTER [A-Z]+[0-9A-Z]*
 
 %%
+
+"+"           { return '+'; }
+"-"           { return '-'; }
+"*"           { return '*'; }
+"/"           { return '/'; }
+"("           { return '('; }
+")"           { return ')'; }
 
 "forward"|"fw"        { return KW_FORWARD; }
 "backward"|"bw"       { return KW_BACKWARD; }
