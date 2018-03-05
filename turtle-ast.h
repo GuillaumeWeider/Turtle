@@ -27,7 +27,8 @@ enum ast_func {
 // kind of a node in the abstract syntax tree
 enum ast_kind {
   KIND_CMD_SIMPLE,
-  // TODO: add non-simple commands: repeat, block, proc, call, set
+  KIND_REPEAT,
+  // TODO: add non-simple commands: block, proc, call, set
 
   KIND_EXPR_VALUE,
   KIND_EXPR_NAME,
@@ -62,6 +63,8 @@ struct ast_node *make_expr_name(const char* name);
 struct ast_node *make_cmd_simple_noParam(enum ast_cmd cmd);
 struct ast_node *make_cmd_simple_1Param(struct ast_node* children, enum ast_cmd cmd);
 struct ast_node *make_cmd_simple_2Param(struct ast_node* children1, struct ast_node* children2, enum ast_cmd cmd);
+
+struct ast_node *make_repeat(struct ast_node* children1, struct ast_node* children2);
 
 // root of the abstract syntax tree
 struct ast {

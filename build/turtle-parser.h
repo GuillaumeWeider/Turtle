@@ -56,7 +56,8 @@ extern int yydebug;
     KW_LEFT = 266,
     KW_HEADING = 267,
     KW_COLOR = 268,
-    KW_POSITION = 269
+    KW_POSITION = 269,
+    KW_REPEAT = 270
   };
 #endif
 
@@ -71,7 +72,7 @@ union YYSTYPE
   const char *name;
   struct ast_node *node;
 
-#line 75 "/mnt/d/bash/AS/turtle/build/turtle-parser.h" /* yacc.c:1909  */
+#line 76 "/mnt/d/bash/AS/turtle/build/turtle-parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

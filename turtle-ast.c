@@ -50,6 +50,15 @@ struct ast_node *make_cmd_simple_2Param(struct ast_node* children1, struct ast_n
   return node;
 }
 
+struct ast_node *make_repeat(struct ast_node* children1, struct ast_node* children2) {
+  struct ast_node *node = calloc(1, sizeof(struct ast_node));
+  node->kind = KIND_REPEAT;
+  node->children_count = 2;
+  node->children[0] = children1;
+  node->children[1] = children2;
+  return node;
+}
+
 
 void ast_destroy(struct ast *self) {
 
@@ -132,6 +141,12 @@ void ast_node_print(const struct ast_node *self) {
           ast_node_print(self->children[0]);
           break;
       }
+      break;
+    case KIND_REPEAT:
+      printf("repeat {\n");
+      ast_node_print(self->children[0]);
+      ast_node_print(self->children[1]);
+      printf("}\n");
       break;
   }
   if(self->next != NULL) {

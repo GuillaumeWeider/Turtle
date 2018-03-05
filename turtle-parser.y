@@ -51,17 +51,17 @@ cmds:
 ;
 
 cmd:
-    KW_UP                 { $$ = make_cmd_simple_noParam(CMD_UP); }
-  | KW_DOWN               { $$ = make_cmd_simple_noParam(CMD_DOWN); }
-  | KW_FORWARD expr       { $$ = make_cmd_simple_1Param($2, CMD_FORWARD); }
-  | KW_BACKWARD expr      { $$ = make_cmd_simple_1Param($2, CMD_BACKWARD); }
-  | KW_PRINT expr         { $$ = make_cmd_simple_1Param($2, CMD_PRINT); }
-  | KW_RIGHT expr         { $$ = make_cmd_simple_1Param($2, CMD_RIGHT); }
-  | KW_LEFT expr          { $$ = make_cmd_simple_1Param($2, CMD_LEFT); }
-  | KW_HEADING expr       { $$ = make_cmd_simple_1Param($2, CMD_HEADING); }
-  | KW_COLOR expr         { $$ = make_cmd_simple_1Param($2, CMD_COLOR); } /*Trois param ou une couleur et les virgules entre les expr*/
-  | KW_POSITION expr ',' expr { $$ = make_cmd_simple_2Param($2, $4, CMD_POSITION); }
-  | KW_REPEAT expr ',' cmd
+    KW_UP                      { $$ = make_cmd_simple_noParam(CMD_UP); }
+  | KW_DOWN                    { $$ = make_cmd_simple_noParam(CMD_DOWN); }
+  | KW_FORWARD expr            { $$ = make_cmd_simple_1Param($2, CMD_FORWARD); }
+  | KW_BACKWARD expr           { $$ = make_cmd_simple_1Param($2, CMD_BACKWARD); }
+  | KW_PRINT expr              { $$ = make_cmd_simple_1Param($2, CMD_PRINT); }
+  | KW_RIGHT expr              { $$ = make_cmd_simple_1Param($2, CMD_RIGHT); }
+  | KW_LEFT expr               { $$ = make_cmd_simple_1Param($2, CMD_LEFT); }
+  | KW_HEADING expr            { $$ = make_cmd_simple_1Param($2, CMD_HEADING); }
+  | KW_COLOR expr              { $$ = make_cmd_simple_1Param($2, CMD_COLOR); } /*Trois param ou une couleur et les virgules entre les expr*/
+  | KW_POSITION expr ',' expr  { $$ = make_cmd_simple_2Param($2, $4, CMD_POSITION); }
+  | KW_REPEAT expr ',' cmds    { $$ = make_repeat($2, $4); }
 ;
 
 expr_literal:

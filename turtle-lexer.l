@@ -32,6 +32,9 @@ LETTER [A-Z]+[0-9A-Z]*
 "heading"|"hd"        { return KW_HEADING; }
 "color"               { return KW_COLOR; }
 
+"repeat"              { return KW_REPEAT; }
+
+
 {DIGIT}+              { yylval.value = strtod(yytext, NULL); return VALUE; }
 {LETTER}*             { yylval.value = strtod(yytext, NULL); return NAME; }
 
