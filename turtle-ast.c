@@ -147,6 +147,7 @@ void ast_node_print(const struct ast_node *self) {
       ast_node_print(self->children[0]);
       ast_node_print(self->children[1]);
       printf("}\n");
+      printf("   ");
       break;
   }
   if(self->next != NULL) {
