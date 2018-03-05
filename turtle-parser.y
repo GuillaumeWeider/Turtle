@@ -76,12 +76,6 @@ expr_primary:
 
 expr:
       expr_primary      { $$ = $1; }
-    | expr '+' expr     { $$ = $1 + $3; }
-    | expr '-' expr     { $$ = $1 - $3; }
-    | expr '*' expr     { $$ = $1 * $3; }
-    | expr '/' expr     { $$ = $1 / $3; }
-    | '('expr')'        { $$ = ( $2 ); }
-    | '-' expr '+' expr { $$ = $4 - $2;} /*A revoir -> moins unaire*/
 ;
 
 %%
