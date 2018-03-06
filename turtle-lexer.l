@@ -20,6 +20,9 @@ STRING [A-Z]+[0-9A-Z]*
 "/"           { return '/'; }
 "("           { return '('; }
 ")"           { return ')'; }
+"{"           { return '{'; }
+"}"           { return '}'; }
+","           { return ','; }
 
 "forward"|"fw"        { return KW_FORWARD; }
 "backward"|"bw"       { return KW_BACKWARD; }
@@ -43,6 +46,7 @@ STRING [A-Z]+[0-9A-Z]*
 "sqrt"                { return KW_SQRT; }
 "pow"                 { return KW_POW; }
 "random"              { return KW_RANDOM; }
+
 
 {DIGIT}+              { yylval.value = strtod(yytext, NULL); return VALUE; }
 {STRING}              { yylval.value = strtod(yytext, NULL); return NAME; }

@@ -329,6 +329,8 @@ void ast_node_print(const struct ast_node *self) {
         case CMD_COLOR:
           printf("\ncolor ");
           ast_node_print(self->children[0]);
+          ast_node_print(self->children[1]);
+          ast_node_print(self->children[2]);
           break;
       }
       break;

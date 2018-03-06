@@ -47,6 +47,7 @@ void yyerror(struct ast *ret, const char *);
 %token            KW_POW       "pw"
 %token            KW_RANDOM    "random"
 
+
 %left '+' '-'
 %left '*' '/'
 %left UMINUS
@@ -82,7 +83,7 @@ cmd:
 ;
 
 block:
-  '{' cmds '}'                         { $$ = make_cmd_kind_1Param($2, KIND_BLOCK); }
+   '{' cmds '}'     { $$ = make_cmd_kind_1Param($2, KIND_BLOCK); }
 ;
 
 expr_literal:
