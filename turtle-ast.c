@@ -166,12 +166,12 @@ void ast_eval(const struct ast *self, struct context *ctx) {
 
 }
 
-double ast_node_eval(const struct ast_node *self, struct context *ctx) {
+void ast_node_eval(const struct ast_node *self, struct context *ctx) {
   //Mettre à jour le ctx et faire des printf (lineTo, moveTo, color)
 
   switch(self->kind) {
     case KIND_EXPR_VALUE:
-      return self->u.value;
+
       break;
     case KIND_EXPR_NAME:
 
