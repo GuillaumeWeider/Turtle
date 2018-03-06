@@ -84,6 +84,9 @@ struct ast_node *make_expr_binop(struct ast_node* children1, struct ast_node* ch
 struct ast_node *make_function_1Param(struct ast_node* children, enum ast_func func);
 struct ast_node *make_function_2Param(struct ast_node* children1, struct ast_node* children2, enum ast_func func);
 
+double getAngle(double angle);
+double validValue(double value);
+
 // root of the abstract syntax tree
 struct ast {
   struct ast_node *unit;
@@ -112,5 +115,6 @@ void ast_node_print(const struct ast_node *self);
 
 // evaluate the tree and generate some basic primitives
 void ast_eval(const struct ast *self, struct context *ctx);
+double ast_node_eval(const struct ast_node *self, struct context *ctx);
 
 #endif /* TURTLE_AST_H */

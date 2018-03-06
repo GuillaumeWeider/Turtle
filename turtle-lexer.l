@@ -45,7 +45,7 @@ STRING [A-Z]+[0-9A-Z]*
 "random"              { return KW_RANDOM; }
 
 {DIGIT}+              { yylval.value = strtod(yytext, NULL); return VALUE; }
-{STRING}*             { yylval.value = strtod(yytext, NULL); return NAME; }
+{STRING}              { yylval.value = strtod(yytext, NULL); return NAME; }
 
 [\n\t\r ]*              /* whitespace */
 .                     { fprintf(stderr, "Unknown token: '%s'\n", yytext); exit(EXIT_FAILURE); }

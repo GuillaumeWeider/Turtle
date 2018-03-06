@@ -75,9 +75,9 @@ cmd:
   | KW_HEADING expr                    { $$ = make_cmd_simple_1Param($2, CMD_HEADING); }
   | KW_COLOR expr ',' expr ',' expr    { $$ = make_cmd_simple_3Param($2, $4, $6, CMD_COLOR); }
   | KW_POSITION expr ',' expr          { $$ = make_cmd_simple_2Param($2, $4, CMD_POSITION); }
-  | KW_REPEAT expr cmds                { $$ = make_cmd_kind_2Param($2, $3, KIND_REPEAT); }
+  | KW_REPEAT expr block               { $$ = make_cmd_kind_2Param($2, $3, KIND_REPEAT); }
   | KW_SET NAME expr                   { $$ = make_cmd_kind_name_2Param($2, $3, KIND_SET); } /*Dans eval faire pour que toutes les variables soient enregistrées dans un tableau ou une liste chainé*/
-  | KW_PROC NAME block                 { $$ = make_cmd_kind_name_2Param($2, $3, KIND_PROC); }
+  | KW_PROC NAME cmd                   { $$ = make_cmd_kind_name_2Param($2, $3, KIND_PROC); }
   | KW_CALL expr                       { $$ = make_cmd_kind_1Param($2, KIND_CALL); }
 ;
 
